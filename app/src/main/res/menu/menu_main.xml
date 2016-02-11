@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/action_question"
+        android:title="@string/msg_help"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_question"
+        app:showAsAction="always"/>
+</menu>

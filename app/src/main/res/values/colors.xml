@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="step_pager_previous_tab_color">#1C588F</color>
+    <color name="step_pager_selected_tab_color">#1C588F</color>
+    <color name="step_pager_next_tab_color">#10000000</color>
+
+    <color name="text_light">#96000000</color>
+    <color name="instruction_text">#6b6b6b</color>
+
+    <color name="list_item_title">#626262</color>
+    <color name="text_selected">#888</color>
+    <color name="list_background">#F1F3F3</color>
+    <color name="list_background_pressed">#38C2DE</color>
+    <color name="list_divider">#E7E9E9</color>
+    <color name="back_toolbar">#1c588f</color>
+    <color name="text_toolbar">#FFFFFF</color>
+
+    <!-- Material theme colours -->
+    <color name="colorPrimary">#1C588F</color>
+    <color name="textColorPrimary">#1C588F</color>
+    <color name="colorPrimaryDark">#1C588F</color>
+</resources>

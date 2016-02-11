@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">SisApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_product_tour">ProductTourActivity</string>
+    <string name="no_internet">NOTA: No hay conexión a Internet, las informaciones visualizadas podrián no estar actualizadas</string>
+    <string name="tip_seg">Tipos de Seguro</string>
+
+    <string name="msg_download_eess_failed">Ocurrió un error en la descarga de establecimientos</string>
+    <string name="msg_consulta_asegurado_failed">Ocurrió un error en la consulta de asegurado</string>
+    <string name="msg_please_wait">Espere...</string>
+    <string name="msg_search">Buscando...</string>
+    <string name="msg_help">Ayuda</string>
+    <string name="SKIP">Saltar</string>
+    <string name="DONE">Listo</string>
+    <string name="welcom_head_01">Bienvenido!</string>
+    <string name="welcom_content_01">Conoce la nueva Apliación Móvil del SIS</string>
+    <string name="welcom_head_02">Conoce</string>
+    <string name="welcom_content_02">En esta aplicación podrá informarse sobre los diferentes tipos de seguro con los que cuenta el SIS</string>
+    <string name="welcom_head_03">Consulta</string>
+    <string name="welcom_content_03">Podrás consultar el estado de tu afiliación, asi como los procedimientos y requisitos para atenderte y afiliarte al SIS</string>
+    <string name="welcom_head_04">Busca</string>
+    <string name="welcom_content_04">Podrás ubicar rápidamente los establecimientos más cercanos y te ayudarmos a encontrar la ruta adecuada para llegar</string>
+    <string name="title_activity_splash">SIS App</string>
+    <string name="title_activity_tip_seg">TipSegActivity</string>
+    <string name="title_activity_tip_afi">TipAfiActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_afiliacion">AfiliacionActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_atencion">AtencionActivity</string>
+    <string name="title_activity_consulta">ConsultaActivity</string>
+    <string name="title_activity_afiliacion_menu">AfiliacionMenuActivity</string>
+    <string name="title_activity_atencion_menu">AtencionMenuActivity</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="next">Siguiente</string>
+    <string name="prev">Anterior</string>
+    <string name="finish">Consultar</string>
+    <string name="review">Datos ingresados</string>
+
+    <string name="msg_emg">Para casos de emergencia acuda al establecimiento más cercano, para atención ambulatoria consulte su establecimiento de adscripción.</string>
+    <string name="msg_consultar">Consultar Establecimiento</string>
+    <string name="msg_map">Ir al mapa</string>
+    <string name="submit_confirm_button">Confirmar</string>
+    <string name="submit_confirm_message">¿Seguro que desea enviar estos datos a la consulta?</string>
+
+    <string name="herp_derpsum"><html>N° Afiliación: <b>R-00505288</b></html>\nN° Doc: 4155464\nNombre: asdasdasd sdkjfhsdhfsd sdkfhsdkjfh sdjkfhsdjk hfksdfksdhfksd h\nTipo de asegurado: Titular\nEstado: Activo</string>
+    <string name="title_activity_afiliado">AfiliadoActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

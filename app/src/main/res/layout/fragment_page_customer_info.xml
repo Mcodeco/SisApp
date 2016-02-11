@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/WizardPageContainer">
+
+    <TextView style="@style/WizardPageTitle" />
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:scrollbarStyle="outsideOverlay">
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText android:id="@+id/txtApellidoPaterno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="text"
+                android:hint="Apellido Paterno"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/text_light"/>
+
+            <EditText android:id="@+id/txtApellidoMaterno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="text"
+                android:hint="Apellido Materno"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/text_light"/>
+
+            <EditText android:id="@+id/txtPrimerNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="text"
+                android:hint="Primer nombre"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/text_light"/>
+
+            <EditText android:id="@+id/txtSegundoNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="text"
+                android:hint="Segundo nombre"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/text_light"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

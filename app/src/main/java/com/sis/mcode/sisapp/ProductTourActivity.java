@@ -25,9 +25,6 @@ import com.sis.mcode.sisapp.fragment.ProductTourFragment;
 
 public class ProductTourActivity extends AppCompatActivity {
 
-
-    //test
-    
     static final int NUM_PAGES = 5;
 
     ViewPager pager;

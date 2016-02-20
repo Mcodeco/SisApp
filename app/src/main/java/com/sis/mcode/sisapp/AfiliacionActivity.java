@@ -21,7 +21,6 @@ public class AfiliacionActivity extends RoboActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_afiliacion);
 
-
         tipafidesc = getIntent().getStringExtra("tipafi_desc");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);

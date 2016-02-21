@@ -33,9 +33,6 @@
             android:name=".TipSegActivity"
             android:label="@string/title_activity_tip_seg" />
         <activity
-            android:name=".TipAfiActivity"
-            android:label="@string/title_activity_tip_afi" />
-        <activity
             android:name=".AfiliacionActivity"
             android:label="@string/title_activity_afiliacion"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

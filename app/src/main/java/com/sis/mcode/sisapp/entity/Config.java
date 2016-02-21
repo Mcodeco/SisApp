@@ -26,7 +26,9 @@ public class Config {
     }
 
     public String getServer() {
-        return server;
+        // external
+        return "200.60.55.89";
+        //internal return server;
     }
 
     public void setServer(String server) {

@@ -199,7 +199,7 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
                 this.startActivity(intent);
                 break;
             case 3:
-                intent = new Intent(this,MenuActivity.class);
+                intent = new Intent(this,SliderActivity.class);
                 intent.putExtra("opt",i);
                 intent.putExtra("title",lstMenu.get(i).getItem());
                 this.startActivity(intent);

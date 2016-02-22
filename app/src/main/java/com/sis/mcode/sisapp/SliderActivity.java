@@ -1,9 +1,7 @@
 package com.sis.mcode.sisapp;
 
-import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,7 +10,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,21 +19,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import com.sis.mcode.sisapp.fragment.SliderFragment;
 
-import com.nineoldandroids.view.ViewHelper;
-import com.sis.mcode.sisapp.fragment.PRFragment;
 
-import org.h2.engine.Constants;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-public class WizardPRActivity extends AppCompatActivity {
+public class SliderActivity extends AppCompatActivity {
 
     private int pages;
-
     ViewPager pager;
     PagerAdapter pagerAdapter;
     LinearLayout circles;
@@ -44,9 +32,7 @@ public class WizardPRActivity extends AppCompatActivity {
     Button done;
     ImageButton next;
     boolean isOpaque = true;
-
     ContextWrapper contextWrapper;
-    TabsPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +42,8 @@ public class WizardPRActivity extends AppCompatActivity {
         window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        setContentView(R.layout.activity_wizard_pr);
-
-
-
-
+        setContentView(R.layout.activity_slider);
         this.contextWrapper = new ContextWrapper(this);
-
         pages = getIntent().getIntExtra("pages", 0);
 
         skip = Button.class.cast(findViewById(R.id.skip));
@@ -91,13 +72,7 @@ public class WizardPRActivity extends AppCompatActivity {
 
         pager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-
-        adapter = new TabsPagerAdapter(getSupportFragmentManager()); //TabsPagerAdapter = whatever you named the PagerAdapter
-        addFragments();
-        //pager.setAdapter(adapter);
-
         pager.setAdapter(pagerAdapter);
-
         pager.setPageTransformer(true, new CrossfadePageTransformer());
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -141,67 +116,6 @@ public class WizardPRActivity extends AppCompatActivity {
         buildCircles();
 
     }
-
-    private void addFragments() {
-        for (int i = 0; i <= pages -1; i++){
-            adapter.addFragment(new PRFragment(), String.valueOf(i));
-        }
-    }
-
-
-    public class TabsPagerAdapter extends FragmentPagerAdapter {
-
-        /**
-         * Contains all the fragments.
-         */
-        private List<Fragment> fragments = new ArrayList<>();
-
-        /**
-         * Contains all the tab titles.
-         */
-        private List<String> tabTitles = new ArrayList<>();
-
-        /**
-         * Creates a new PagerAdapter instance.
-         *
-         * @param fragmentManager The FragmentManager.
-         */
-        public TabsPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public int getCount() {
-            return fragments.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles.get(position);
-        }
-
-        /**
-         * Adds the fragment to the list, also adds the fragment's tab title.
-         *
-         * @param fragment New instance of the Fragment to be associated with this tab.
-         */
-        public void addFragment(Fragment fragment, String tabTitle) {
-            fragments.add(fragment);
-            tabTitles.add(tabTitle);
-        }
-
-    }
-
-
-
-
-
-
 
     private void buildCircles(){
         circles = null;
@@ -249,14 +163,7 @@ public class WizardPRActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            /*PRFragment pr = new PRFragment();
-            pr.newInstance(R.layout.fragment_pr);
-            Log.d("getItem", String.valueOf(position));
-            pr.newInstance(position);
-            return pr;*/
-
-
-            Fragment fragment = new PRFragment();
+            Fragment fragment = new SliderFragment();
             Bundle args = new Bundle();
             args.putInt("pos", position);
             fragment.setArguments(args);
@@ -306,5 +213,4 @@ public class WizardPRActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

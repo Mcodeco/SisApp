@@ -179,15 +179,14 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
     }
 
     private void openScreen(int i){
-        //Colocar activity que va a mostrar
 
-        /*Intent intent = new Intent(this,TipAfiActivity.class);
+        Intent intent = new Intent(this,SliderActivity.class);
         intent.putExtra("tipseg_id", lstTipSeg.get(i).getId());
         intent.putExtra("tipseg_name", lstTipSeg.get(i).getNombre());
         intent.putExtra("tipseg_desc", lstTipSeg.get(i).getDescripcion());
         intent.putExtra("tipseg_imagen", lstTipSeg.get(i).getImagen());
         intent.putExtra("opt",getIntent().getIntExtra("opt",0));
-        this.startActivity(intent);*/
+        this.startActivity(intent);
 
     }
 

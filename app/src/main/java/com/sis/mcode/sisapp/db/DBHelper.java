@@ -12,11 +12,6 @@ import com.sis.mcode.sisapp.entity.App;
 import com.sis.mcode.sisapp.entity.Config;
 import com.sis.mcode.sisapp.entity.Eess;
 import com.sis.mcode.sisapp.entity.MenuItems;
-import com.sis.mcode.sisapp.entity.ProcAfi;
-import com.sis.mcode.sisapp.entity.ProcAte;
-import com.sis.mcode.sisapp.entity.ReqAfi;
-import com.sis.mcode.sisapp.entity.ReqAte;
-import com.sis.mcode.sisapp.entity.TipAfi;
 import com.sis.mcode.sisapp.entity.TipSeg;
 
 import java.io.File;
@@ -36,12 +31,6 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private Dao<App,Integer> appDao;
     private Dao<TipSeg, Integer> tipSegDao;
-    private Dao<TipAfi, Integer> tipAfiDao;
-
-    private Dao<ProcAfi, Integer> procAfiDao;
-    private Dao<ProcAte, Integer> procAteDao;
-    private Dao<ReqAfi, Integer> reqAfiDao;
-    private Dao<ReqAte, Integer> reqAteDao;
 
     private Dao<MenuItems, Integer> menuDao;
     private Dao<Config, Integer> configDao;
@@ -82,40 +71,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         }
         return tipSegDao;
     }
-    public Dao<TipAfi, Integer> getTipAfiDao() throws SQLException{
-        if(tipAfiDao == null){
-            tipAfiDao = getDao(TipAfi.class);
-        }
-        return tipAfiDao;
-    }
 
-    public Dao<ProcAfi, Integer> getProcAfiDao() throws SQLException {
-        if (procAfiDao == null) {
-            procAfiDao = getDao(ProcAfi.class);
-        }
-        return procAfiDao;
-    }
-
-    public Dao<ProcAte, Integer> getProcAteDao() throws SQLException {
-        if (procAteDao == null) {
-            procAteDao = getDao(ProcAte.class);
-        }
-        return procAteDao;
-    }
-
-    public Dao<ReqAfi, Integer> getReqAfiDao() throws SQLException {
-        if (reqAfiDao == null) {
-            reqAfiDao = getDao(ReqAfi.class);
-        }
-        return reqAfiDao;
-    }
-
-    public Dao<ReqAte, Integer> getReqAteDao() throws SQLException {
-        if (reqAteDao == null) {
-            reqAteDao = getDao(ReqAte.class);
-        }
-        return reqAteDao;
-    }
 
     public Dao<MenuItems, Integer> getMenuDao() throws SQLException{
         if(menuDao == null){

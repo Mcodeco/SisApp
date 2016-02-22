@@ -33,18 +33,9 @@
             android:name=".TipSegActivity"
             android:label="@string/title_activity_tip_seg" />
         <activity
-            android:name=".AfiliacionActivity"
-            android:label="@string/title_activity_afiliacion"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".AtencionActivity"
-            android:label="@string/title_activity_atencion"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".ConsultaActivity"
             android:label="@string/title_activity_consulta"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MenuActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -61,9 +52,8 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".ConsultaAfiliadoActivity" />
-        <activity android:name=".DescActivity" />
         <activity android:name=".DetalleAfiliadoActivity" />
-        <activity android:name=".WizardPRActivity"></activity>
+        <activity android:name=".SliderActivity"></activity>
     </application>
 
 </manifest>

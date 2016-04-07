@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.android.gms.location.internal.LocationRequestUpdateData;
 import com.sis.mcode.sisapp.service.impl.ConfigurationServiceImpl;
 
 import java.io.File;
@@ -19,7 +20,7 @@ import java.net.URL;
 public class ImageServices {
 
     private ConfigurationServiceImpl cfgService = new ConfigurationServiceImpl();
-    String url = String.format("http://%s/sisGestorDeContenidos/files/", cfgService.getConfiguration().getServer());
+    public String url = String.format("http://%s/sisGestorDeContenidos/files/", cfgService.getConfiguration().getServer());
 
     public ImageServices() {
         cfgService = new ConfigurationServiceImpl();
@@ -40,15 +41,18 @@ public class ImageServices {
     }
 
     public String saveImage(Context context, String nombre, Bitmap imagen){
+
+        Log.d("Context",context.toString());
         ContextWrapper cw = new ContextWrapper(context);
 
         File dirImages = cw.getDir("sisapp", Context.MODE_PRIVATE);
         File myPath = new File(dirImages, nombre);
+        Log.d("saveImage", myPath.toString());
 
         FileOutputStream fos = null;
         try{
             fos = new FileOutputStream(myPath);
-            imagen.compress(Bitmap.CompressFormat.JPEG, 10, fos);
+            imagen.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
         }catch (FileNotFoundException ex){
             ex.printStackTrace();

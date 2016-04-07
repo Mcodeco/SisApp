@@ -7,10 +7,9 @@
     android:background="#00bcd4"
     >
 
-    <!--<ImageView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"
-        android:src="@drawable/image3_a_01"
-        android:layout_gravity="center"/>-->
+        android:src="@drawable/tutorial_3"
+        android:scaleType="fitXY"/>
 </RelativeLayout>

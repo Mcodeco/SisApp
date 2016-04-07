@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.inject.Inject;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.sis.mcode.sisapp.application.SisApp;
 import com.sis.mcode.sisapp.db.DBHelper;
 import com.sis.mcode.sisapp.entity.Config;
 
@@ -33,7 +34,8 @@ public class ConfigurationServiceImpl {
 
     public DBHelper getHelper() {
         if (this.dbhelper == null) {
-            this.dbhelper = OpenHelperManager.getHelper(context, //this._context,
+            context = SisApp.getAppContext();
+            this.dbhelper = OpenHelperManager.getHelper(this.context, //this._context,
                     DBHelper.class);
         }
         return this.dbhelper;

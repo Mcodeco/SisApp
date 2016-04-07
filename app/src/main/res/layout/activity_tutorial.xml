@@ -9,9 +9,12 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dim_foreground_disabled_material_dark"/>
+        android:layout_weight="1"
+        android:background="@color/dim_foreground_disabled_material_dark"
+        android:layout_above="@+id/separator"/>
 
     <View
+        android:id="@+id/separator"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/button_layout"
@@ -19,10 +22,10 @@
 
     <RelativeLayout
         android:id="@+id/button_layout"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
+        android:background="@color/back_toolbar"
         >
 
         <Button

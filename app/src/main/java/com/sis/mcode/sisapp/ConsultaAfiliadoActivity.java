@@ -1,7 +1,11 @@
 package com.sis.mcode.sisapp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
@@ -49,8 +53,9 @@ public class ConsultaAfiliadoActivity extends RoboActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
+        toolbar.setLogo(R.mipmap.ic_launcher);
         toolbar.setTitleTextColor(0xffffffff);
-        toolbar.setTitle("COINCIDENCIAS");
+        toolbar.setTitle(" | COINCIDENCIAS");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = this.getSupportActionBar();
@@ -107,30 +112,49 @@ public class ConsultaAfiliadoActivity extends RoboActionBarActivity {
             dialog.dismiss();
 
             if(result.isSuccess()) {
-
-                final ArrayList<String> list = new ArrayList<>();
-                for (Afiliado afiliado : result.getInfo()) {
-                    list.add(afiliado.toString());
-                }
-
-                ListView listView = (ListView) findViewById(R.id.listview_info);
-                StableArrayAdapter adapter = new StableArrayAdapter(ConsultaAfiliadoActivity.this, android.R.layout.simple_list_item_1, list);
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, final View view,
-                                            int position, long id) {
-                        Intent intent = new Intent(ConsultaAfiliadoActivity.this, DetalleAfiliadoActivity.class);
-                        intent.putExtra("tabla", result.getInfo().get(position).getTabla());
-                        intent.putExtra("numReg", result.getInfo().get(position).getNumReg());
-                        startActivity(intent);
+                if (result.getInfo().size() <= 0){
+                    showMessageNoInfo();
+                } else {
+                    final ArrayList<String> list = new ArrayList<>();
+                    for (Afiliado afiliado : result.getInfo()) {
+                        list.add(afiliado.toString());
                     }
 
-                });
-            }
+                    ListView listView = (ListView) findViewById(R.id.listview_info);
+                    StableArrayAdapter adapter = new StableArrayAdapter(ConsultaAfiliadoActivity.this, android.R.layout.simple_list_item_1, list);
+                    listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, final View view,
+                                                int position, long id) {
+                            Intent intent = new Intent(ConsultaAfiliadoActivity.this, DetalleAfiliadoActivity.class);
+                            intent.putExtra("tabla", result.getInfo().get(position).getTabla());
+                            intent.putExtra("numReg", result.getInfo().get(position).getNumReg());
+                            startActivity(intent);
+                        }
+
+                    });
+                }
+            }
         }
+    }
+
+    private void showMessageNoInfo(){
+        DialogFragment dg = new DialogFragment() {
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                return new AlertDialog.Builder(getActivity())
+                        .setMessage("No se encontraron coincidencias...")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        })
+                        .create();
+            }
+        };
+        dg.show(getFragmentManager(), "place_order_dialog");
     }
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -155,10 +179,6 @@ public class ConsultaAfiliadoActivity extends RoboActionBarActivity {
         public boolean hasStableIds() {
             return true;
         }
-
-    }
-
-    private void viewDetail() {
 
     }
 

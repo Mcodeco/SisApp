@@ -6,11 +6,9 @@
     android:clipChildren="false"
     android:background="#f4b400" >
 
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"
-        android:src="@drawable/image2_a_01"
-        android:layout_gravity="center"/>
+        android:src="@drawable/tutorial_2"
+        android:scaleType="fitXY"/>
 </RelativeLayout>

@@ -35,9 +35,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.inject.Inject;
+import com.google.maps.android.clustering.ClusterManager;
 import com.sis.mcode.sisapp.communication.DownloadListOfEessResult;
 import com.sis.mcode.sisapp.controller.EessController;
+import com.sis.mcode.sisapp.entity.ClusterMap;
 import com.sis.mcode.sisapp.entity.Eess;
+import com.sis.mcode.sisapp.entity.OwnIconRended;
 import com.sis.mcode.sisapp.util.RoboActionBarActivity;
 
 import java.util.List;
@@ -54,43 +57,59 @@ public class MapsActivity extends RoboActionBarActivity implements OnMapReadyCal
 
     @Inject
     protected EessController eessController;
-    List<Eess> lstEess;
     Context mContext;
+
+    private ClusterManager<ClusterMap> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setNavigationIcon(R.mipmap.ic_back);
-        myToolbar.setTitle(getIntent().getStringExtra("title"));
+        myToolbar.setLogo(R.mipmap.ic_launcher);
+        myToolbar.setTitle(" | BUSCAR");
         myToolbar.setTitleTextColor(0xffffffff);
         setSupportActionBar(myToolbar);
 
         ActionBar actionBar = this.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        showMessageEmg();
         mMap = googleMap;
 
-        showMessageEmg();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+
+        /*if (bestProvider != null){
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+        }*/
+        setUpClusterer();
+
+
+        /*showMessageEmg();
 
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                if (cameraPosition.zoom >= 12) {
-                    LatLng ll = new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude);
-                    getEess(ll);
-                }
+                lat = cameraPosition.target.latitude;
+                lon = cameraPosition.target.longitude;
+                getEess();
             }
         });
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -106,14 +125,20 @@ public class MapsActivity extends RoboActionBarActivity implements OnMapReadyCal
         CameraUpdate zoomUp;
         if (bestProvider != null){
             Location location = locationManager.getLastKnownLocation(bestProvider);
-            lalo = new LatLng(location.getLatitude(), location.getLongitude());
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+            lalo = new LatLng(lat, lon);
             zoomUp = CameraUpdateFactory.zoomTo(16);
         }else{
             lalo = new LatLng(lat,lon);
             zoomUp = CameraUpdateFactory.zoomTo(zoom);
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lalo));
-        mMap.animateCamera(zoomUp);
+        mMap.animateCamera(zoomUp);*/
+    }
+
+    private void showMessage(String text, int length){
+        Toast.makeText(this, text, length).show();
     }
 
     private void showMessageEmg(){
@@ -131,7 +156,7 @@ public class MapsActivity extends RoboActionBarActivity implements OnMapReadyCal
                         .create();
             }
         };
-        dg.show(getFragmentManager(),"place_order_dialog");
+        dg.show(getFragmentManager(), "place_order_dialog");
     }
 
     private void goToConsular(){
@@ -148,42 +173,41 @@ public class MapsActivity extends RoboActionBarActivity implements OnMapReadyCal
                 .snippet(address)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.hospital)));
     }
-    private void getEess(LatLng ll){
-        new downloadEESSTask().execute(ll);
+    private void getEess(){
+        try {
+            new downloadEESSTask().execute();
+        } catch (Exception e) {
+           showMessage(e.getMessage(),Toast.LENGTH_LONG);
+        }
+
     }
 
-    public class downloadEESSTask extends AsyncTask<LatLng, Void, DownloadListOfEessResult> {
+    public class downloadEESSTask extends AsyncTask<Void, Void, DownloadListOfEessResult> {
 
         @Override
-        protected void onPreExecute() {}
+        protected void onPreExecute() {
+
+        }
 
         @Override
-        protected DownloadListOfEessResult doInBackground(LatLng... params) {
-            //LatLng lanlon = params[0];
+        protected DownloadListOfEessResult doInBackground(Void... params) {
+            LatLng ll = new LatLng(lat, lon);
             DownloadListOfEessResult result = new DownloadListOfEessResult();
-            //result = eessController.downloadEess(lanlon);
+            result = eessController.downloadEess(ll);
             return result;
         }
         @Override
         protected void onPostExecute(DownloadListOfEessResult result) {
             if (result.isSuccess()){
-                putAllEess();
-            }else {
-                if(result.getErrorMessage() != null){
-                    showMessage(result.getErrorMessage(), Toast.LENGTH_LONG);
-                }
-                //finish();
+                //putAllEess(result);
+                addItems(result);
+
             }
         }
     }
 
-    private void showMessage(String text, int length){
-        Toast.makeText(this, text, length).show();
-    }
-
-    private void putAllEess(){
-        lstEess = eessController.getEessList();
-        for(Eess eess : lstEess){
+    private void putAllEess(DownloadListOfEessResult result){
+        for(Eess eess : result.getData()){
             putEess(eess.getLatitude(),eess.getLongitud(), eess.getDescripcion(),eess.getDireccion());
         }
     }
@@ -213,4 +237,58 @@ public class MapsActivity extends RoboActionBarActivity implements OnMapReadyCal
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void setUpClusterer() {
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), zoom));
+
+        mClusterManager = new ClusterManager<ClusterMap>(this, mMap);
+
+        mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                mClusterManager.onCameraChange(cameraPosition);
+                float[] results = new float[1];
+                Location.distanceBetween(lat,lon,cameraPosition.target.latitude,cameraPosition.target.longitude,results);
+                float km = results[0]/1000;
+                if (km > 5) {
+                    lat = cameraPosition.target.latitude;
+                    lon = cameraPosition.target.longitude;
+                    getEess();
+                }
+            }
+        });
+
+
+        mMap.setOnMarkerClickListener(mClusterManager);
+    }
+
+    private void addItems(DownloadListOfEessResult result) {
+
+        /* Set some lat/lng coordinates to start with.
+        double lat = 51.5145160;
+        double lng = -0.1270060;*/
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        mClusterManager.clearItems();
+        for(Eess eess : result.getData()){
+            ClusterMap offsetItem = new ClusterMap(eess.getDescripcion(),
+                                                   eess.getDireccion(),
+                                                   BitmapDescriptorFactory.fromResource(R.drawable.hospital),
+                                                   new LatLng(eess.getLatitude(),eess.getLongitud()));
+            mClusterManager.setRenderer(new OwnIconRended(getApplicationContext(),mMap,mClusterManager));
+            mClusterManager.addItem(offsetItem);
+        }
+
+        /*for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            ClusterMap offsetItem = new ClusterMap(lat, lng);
+            mClusterManager.addItem(offsetItem);
+        }*/
+    }
+
+
+
 }

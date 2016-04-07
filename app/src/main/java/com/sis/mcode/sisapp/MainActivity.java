@@ -23,22 +23,26 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.sis.mcode.sisapp.communication.DownloadListOfSliderProcAteResult;
 import com.sis.mcode.sisapp.controller.MenuController;
+import com.sis.mcode.sisapp.controller.ProcAteController;
 import com.sis.mcode.sisapp.db.DBHelper;
 import com.sis.mcode.sisapp.design.ButtonMenuAdapter;
 import com.sis.mcode.sisapp.entity.MenuItems;
+import com.sis.mcode.sisapp.entity.SliderProcAfi;
+import com.sis.mcode.sisapp.entity.SliderProcAte;
+import com.sis.mcode.sisapp.entity.SliderTipSeg;
 import com.sis.mcode.sisapp.slidingmenu.fragment.MenuFragment;
 import com.sis.mcode.sisapp.util.PrefConstants;
 import com.sis.mcode.sisapp.util.RoboActionBarActivity;
 import com.sis.mcode.sisapp.util.SAppUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.google.inject.Inject;
-
-import roboguice.inject.ContentView;
 
 public class MainActivity extends RoboActionBarActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
     private SliderLayout mDemoSlider;
@@ -46,13 +50,21 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
     @Inject
     protected MenuController menuController;
 
+    @Inject
+    protected ProcAteController procAteController;
+
     List<MenuItems> lstMenu;
+    List<SliderProcAte> lstSliderProcAte;
+
+    public static List<String[]> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkShowTutorial();
         setContentView(R.layout.activity_main);
+
+        images = new ArrayList<String[]>();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setLogo(R.mipmap.ic_launcher);
@@ -147,6 +159,19 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
 
     }
 
+    private void initImages() {
+        images.clear();
+        lstSliderProcAte = procAteController.getSliderProcAteList();
+        if (lstSliderProcAte.size() > 0){
+            for (SliderProcAte sliderProcAte: lstSliderProcAte) {
+                String[] image = new String[1];
+                image[0] = sliderProcAte.getImagen();
+                images.add(image);
+            }
+        }
+    }
+
+
     public void createMenu() {
         try {
             lstMenu = menuController.getMenuList(1);
@@ -179,6 +204,7 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
     }
 
     private void openScreen(int i){
+        initImages();
         Intent intent;
         switch (i){
             case 0:
@@ -201,6 +227,7 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
             case 3:
                 intent = new Intent(this,SliderActivity.class);
                 intent.putExtra("opt",i);
+                intent.putExtra("pages", images.size());
                 intent.putExtra("title",lstMenu.get(i).getItem());
                 this.startActivity(intent);
                 break;
@@ -213,7 +240,7 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
     }
 
     public void downloadInformation(){
-        new DownloadInformationTask().execute();
+        new DownloadInformationTask().execute(); // Menu y Procedimientos de Atención
     }
 
     private void checkShowTutorial(){
@@ -233,7 +260,7 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
 
     private ProgressDialog dialog;
 
-    public class DownloadInformationTask extends AsyncTask<Void, Void, String> {
+    public class DownloadInformationTask extends AsyncTask<Void, Void, DownloadListOfSliderProcAteResult> {
 
         @Override
         protected void onPreExecute() {
@@ -244,23 +271,27 @@ public class MainActivity extends RoboActionBarActivity implements BaseSliderVie
         }
 
         @Override
-        protected String doInBackground(
+        protected DownloadListOfSliderProcAteResult doInBackground(
                 Void... params) {
-                return String.valueOf("true@noerrors");
+
+            DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+            lstSliderProcAte = procAteController.getSliderProcAteList();
+
+            if (lstSliderProcAte.size()<=0){
+                rslt = procAteController.downloadSliderProcAte();
+            }else{
+                rslt.setSuccess(true);
+            }
+            return rslt;
         }
         @Override
-        protected void onPostExecute(String result) {
-            dialog.dismiss();
-            String[] rslt = result.split("@");
-            if(rslt[0].equals("true")) {
+        protected void onPostExecute(DownloadListOfSliderProcAteResult result) {
+            if(result.isSuccess()) {
                 createMenu();
-            } else {
-                if(rslt[1] != null){
-                    showMessage(rslt[1],Toast.LENGTH_LONG);
-                }
-                finish();
+                dialog.dismiss();
+            }else {
+                showMessage(result.getErrorMessage(),Toast.LENGTH_LONG);
             }
-
         }
     }
 

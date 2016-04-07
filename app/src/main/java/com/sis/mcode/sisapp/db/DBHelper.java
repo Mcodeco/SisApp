@@ -12,6 +12,9 @@ import com.sis.mcode.sisapp.entity.App;
 import com.sis.mcode.sisapp.entity.Config;
 import com.sis.mcode.sisapp.entity.Eess;
 import com.sis.mcode.sisapp.entity.MenuItems;
+import com.sis.mcode.sisapp.entity.SliderProcAfi;
+import com.sis.mcode.sisapp.entity.SliderProcAte;
+import com.sis.mcode.sisapp.entity.SliderTipSeg;
 import com.sis.mcode.sisapp.entity.TipSeg;
 
 import java.io.File;
@@ -31,10 +34,12 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private Dao<App,Integer> appDao;
     private Dao<TipSeg, Integer> tipSegDao;
+    private Dao<SliderTipSeg,Integer> sliderTipSegDao;
+    private Dao<SliderProcAfi,Integer> sliderProcAfiDao;
+    private Dao<SliderProcAte,Integer> sliderProcAteDao;
 
     private Dao<MenuItems, Integer> menuDao;
     private Dao<Config, Integer> configDao;
-    private Dao<Eess,Integer> eessDao;
 
 
     public DBHelper(Context context) {
@@ -72,6 +77,27 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
         return tipSegDao;
     }
 
+    public Dao<SliderTipSeg, Integer> getSliderTipSegDao() throws SQLException{
+        if(sliderTipSegDao == null){
+            sliderTipSegDao = getDao(SliderTipSeg.class);
+        }
+        return sliderTipSegDao;
+    }
+
+    public Dao<SliderProcAfi, Integer> getSliderProcAfiDao() throws SQLException{
+        if(sliderProcAfiDao == null){
+            sliderProcAfiDao = getDao(SliderProcAfi.class);
+        }
+        return sliderProcAfiDao;
+    }
+
+    public Dao<SliderProcAte, Integer> getSliderProcAteDao() throws SQLException{
+        if(sliderProcAteDao == null){
+            sliderProcAteDao = getDao(SliderProcAte.class);
+        }
+        return sliderProcAteDao;
+    }
+
 
     public Dao<MenuItems, Integer> getMenuDao() throws SQLException{
         if(menuDao == null){
@@ -85,13 +111,6 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
             configDao = getDao(Config.class);
         }
         return configDao;
-    }
-
-    public Dao<Eess, Integer> getEessDao() throws SQLException {
-        if(eessDao == null){
-            eessDao = getDao(Eess.class);
-        }
-        return eessDao;
     }
 
     @Override

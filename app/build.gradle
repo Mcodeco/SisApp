@@ -8,8 +8,8 @@ android {
         applicationId "com.sis.mcode.sisapp"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 8
+        versionName "8.0"
         multiDexEnabled = true
     }
     dexOptions {
@@ -30,6 +30,10 @@ dependencies {
         // Already present in NumberPickerCompat
         exclude group: 'com.nineoldandroids'
     }
+    compile project(':library')
+    // Or, fetch from Maven:
+    // compile 'com.google.maps.android:android-maps-utils:0.3+'
+    compile 'com.google.android.gms:play-services-maps:8.4.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.android.gms:play-services:8.4.0'

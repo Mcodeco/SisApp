@@ -9,6 +9,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.TableUtils;
+import com.sis.mcode.sisapp.application.SisApp;
 import com.sis.mcode.sisapp.communication.DownloadListOfEessResult;
 import com.sis.mcode.sisapp.communication.DownloadListOfInfoResult;
 import com.sis.mcode.sisapp.communication.SoapServices;
@@ -42,6 +43,7 @@ public class MenuServiceImpl {
 
     public DBHelper getHelper() {
         if (this.dbhelper == null) {
+            context = SisApp.getAppContext();
             this.dbhelper = OpenHelperManager.getHelper(this.context,
                     DBHelper.class);
         }

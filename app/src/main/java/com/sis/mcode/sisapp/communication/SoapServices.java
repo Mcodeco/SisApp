@@ -101,6 +101,191 @@ public class SoapServices {
         return rslt;
     }
 
+
+    public DownloadListOfSliderTipSegResult getSliderTipSeg() {
+        this.OPERATION_NAME = "ObtenerImagenesTiposDeSeguro";
+
+        String soap_action = this.NAMESPACE.concat(this.OPERATION_NAME);
+        SoapObject request = new SoapObject(this.NAMESPACE, this.OPERATION_NAME);
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+
+        String url = String.format("http://%s/wsSisApp/ServiceSisApp.asmx", cfgService.getConfiguration().getServer());
+
+        HttpTransportSE httpTransport = new HttpTransportSE(url, 10000);
+        try {
+            httpTransport.call(soap_action, envelope);
+            SoapObject soapObject = (SoapObject) envelope.getResponse();
+            if (soapObject != null) {
+                String success = (String) soapObject.getProperty("Success").toString();
+                success = "\"success\":" + success;
+                String str_result;
+                if (success.contains("true")) {
+                    String data = (String) soapObject.getProperty("Data").toString();
+                    data = "\"data\":" + data;
+
+                    str_result = "{" + success + "," + data + "}";
+                } else {
+                    str_result = "{" + success + "}";
+                }
+                Type type = new TypeToken<DownloadListOfSliderTipSegResult>() {
+                }.getType();
+                DownloadListOfSliderTipSegResult rslt = gson.fromJson(str_result, type);
+                return rslt;
+            }
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+            DownloadListOfSliderTipSegResult rslt = new DownloadListOfSliderTipSegResult();
+            rslt.setErrorMessage("Error de conexi—n. Tiempo de espera agotado.");
+            return rslt;
+        } catch (IOException e) {
+            e.printStackTrace();
+            DownloadListOfSliderTipSegResult rslt = new DownloadListOfSliderTipSegResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            DownloadListOfSliderTipSegResult rslt = new DownloadListOfSliderTipSegResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch (IllegalStateException | JsonSyntaxException e) {
+            e.printStackTrace();
+            DownloadListOfSliderTipSegResult rslt = new DownloadListOfSliderTipSegResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        }
+        DownloadListOfSliderTipSegResult rslt = new DownloadListOfSliderTipSegResult();
+        rslt.setErrorMessage("Ocurrió un error en la descarga de tipos de seguro");
+        return rslt;
+    }
+
+    public DownloadListOfSliderProcAfiResult getSliderProcAfi() {
+        this.OPERATION_NAME = "ObtenerProcedimientosDeAfiliacion";
+
+        String soap_action = this.NAMESPACE.concat(this.OPERATION_NAME);
+        SoapObject request = new SoapObject(this.NAMESPACE, this.OPERATION_NAME);
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+
+        String url = String.format("http://%s/wsSisApp/ServiceSisApp.asmx", cfgService.getConfiguration().getServer());
+
+        HttpTransportSE httpTransport = new HttpTransportSE(url, 10000);
+        try {
+            httpTransport.call(soap_action, envelope);
+            SoapObject soapObject = (SoapObject) envelope.getResponse();
+            if (soapObject != null) {
+                String success = (String) soapObject.getProperty("Success").toString();
+                success = "\"success\":" + success;
+                String str_result;
+                if (success.contains("true")) {
+                    String data = (String) soapObject.getProperty("Data").toString();
+                    data = "\"data\":" + data;
+
+                    str_result = "{" + success + "," + data + "}";
+                } else {
+                    str_result = "{" + success + "}";
+                }
+                Type type = new TypeToken<DownloadListOfSliderProcAfiResult>() {
+                }.getType();
+                DownloadListOfSliderProcAfiResult rslt = gson.fromJson(str_result, type);
+                return rslt;
+            }
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAfiResult rslt = new DownloadListOfSliderProcAfiResult();
+            rslt.setErrorMessage("Error de conexi—n. Tiempo de espera agotado.");
+            return rslt;
+        } catch (IOException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAfiResult rslt = new DownloadListOfSliderProcAfiResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAfiResult rslt = new DownloadListOfSliderProcAfiResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch (IllegalStateException | JsonSyntaxException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAfiResult rslt = new DownloadListOfSliderProcAfiResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        }
+        DownloadListOfSliderProcAfiResult rslt = new DownloadListOfSliderProcAfiResult();
+        rslt.setErrorMessage("Ocurrió un error en la descarga de tipos de seguro");
+        return rslt;
+    }
+
+    public DownloadListOfSliderProcAteResult getSliderProcAte() {
+        this.OPERATION_NAME = "ObtenerProcedimientosDeAtencion";
+
+        String soap_action = this.NAMESPACE.concat(this.OPERATION_NAME);
+        SoapObject request = new SoapObject(this.NAMESPACE, this.OPERATION_NAME);
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+
+        String url = String.format("http://%s/wsSisApp/ServiceSisApp.asmx", cfgService.getConfiguration().getServer());
+
+
+        try {
+            HttpTransportSE httpTransport = new HttpTransportSE(url, 10000);
+            httpTransport.call(soap_action, envelope);
+            SoapObject soapObject = (SoapObject) envelope.getResponse();
+            if (soapObject != null) {
+                String success = (String) soapObject.getProperty("Success").toString();
+                success = "\"success\":" + success;
+                String str_result;
+                if (success.contains("true")) {
+                    String data = (String) soapObject.getProperty("Data").toString();
+                    data = "\"data\":" + data;
+
+                    str_result = "{" + success + "," + data + "}";
+                } else {
+                    str_result = "{" + success + "}";
+                }
+                Type type = new TypeToken<DownloadListOfSliderProcAteResult>() {
+                }.getType();
+                DownloadListOfSliderProcAteResult rslt = gson.fromJson(str_result, type);
+                return rslt;
+            }
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+            rslt.setErrorMessage("Error de conexi—n. Tiempo de espera agotado.");
+            return rslt;
+        } catch (IOException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch (IllegalStateException | JsonSyntaxException e) {
+            e.printStackTrace();
+            DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        } catch ( Exception e) {
+            DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+            rslt.setErrorMessage(e.getMessage());
+            return rslt;
+        }
+
+        DownloadListOfSliderProcAteResult rslt = new DownloadListOfSliderProcAteResult();
+        rslt.setErrorMessage("Error inesperado");
+        return rslt;
+
+    }
+
     public DownloadListOfEessResult getEess(LatLng ll) {
 
         this.OPERATION_NAME = "ObtenerEstablecimientosPorUbicacion";
@@ -126,7 +311,7 @@ public class SoapServices {
         md.register(envelope);
 
         String url = String.format("http://%s/wsSisApp/ServiceSisApp.asmx", cfgService.getConfiguration().getServer());
-        HttpTransportSE httpTransport = new HttpTransportSE(url, 10000);
+        HttpTransportSE httpTransport = new HttpTransportSE(url, 60000);
         try {
             httpTransport.call(soap_action, envelope);
             SoapObject soapObject = (SoapObject) envelope.getResponse();
@@ -188,19 +373,19 @@ public class SoapServices {
         PropertyInfo p2 = new PropertyInfo();
         p2.setName("ApMat");
         p2.setType(String.class);
-        p2.setValue(firstLastname);
+        p2.setValue(secondLastname);
         request.addProperty(p2);
 
         PropertyInfo p3 = new PropertyInfo();
         p3.setName("Nom1");
         p3.setType(String.class);
-        p3.setValue(firstLastname);
+        p3.setValue(firstName);
         request.addProperty(p3);
 
         PropertyInfo p4 = new PropertyInfo();
         p4.setName("Nom2");
         p4.setType(String.class);
-        p4.setValue(firstLastname);
+        p4.setValue(secondName);
         request.addProperty(p4);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapSerializationEnvelope.VER11);
@@ -208,7 +393,7 @@ public class SoapServices {
         envelope.setOutputSoapObject(request);
 
         String url = String.format("http://%s/wsSisApp/ServiceSisApp.asmx", cfgService.getConfiguration().getServer());
-        HttpTransportSE httpTransport = new HttpTransportSE(url, 10000);
+        HttpTransportSE httpTransport = new HttpTransportSE(url, 60000);
         try {
             httpTransport.call(soap_action, envelope);
             SoapObject soapObject = (SoapObject) envelope.getResponse();
@@ -278,7 +463,7 @@ public class SoapServices {
         envelope.setOutputSoapObject(request);
 
         String url = String.format("http://%s/wsSisApp/ServiceSisApp.asmx", cfgService.getConfiguration().getServer());
-        HttpTransportSE httpTransport = new HttpTransportSE(url, 10000);
+        HttpTransportSE httpTransport = new HttpTransportSE(url, 60000);
         try {
             httpTransport.call(soap_action, envelope);
             SoapObject soapObject = (SoapObject) envelope.getResponse();

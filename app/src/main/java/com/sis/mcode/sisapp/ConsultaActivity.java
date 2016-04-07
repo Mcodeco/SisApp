@@ -66,7 +66,8 @@ public class ConsultaActivity extends RoboActionBarActivity implements PageFragm
 
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setNavigationIcon(R.mipmap.ic_back);
-        myToolbar.setTitle("CONSULTA DE ASEGURADOS");
+        myToolbar.setLogo(R.mipmap.ic_launcher);
+        myToolbar.setTitle(" | CONSULTAR");
         myToolbar.setTitleTextColor(0xffffffff);
         setSupportActionBar(myToolbar);
 

@@ -19,16 +19,8 @@ public class EessController {
     @Inject
     protected EessServiceImpl _service;
 
-
-    public List<Eess> getEessList(){
-        return _service.getEessList();
-    }
-
     public DownloadListOfEessResult downloadEess(LatLng ll){
         return _service.downloadEess(ll);
     }
 
-    public void cleanEess() {
-        _service.cleanEess();
-    }
 }

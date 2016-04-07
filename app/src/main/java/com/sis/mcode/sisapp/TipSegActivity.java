@@ -6,18 +6,19 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -26,15 +27,22 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.inject.Inject;
+import com.sis.mcode.sisapp.communication.DownloadListOfSliderProcAfiResult;
+import com.sis.mcode.sisapp.communication.DownloadListOfSliderTipSegResult;
 import com.sis.mcode.sisapp.communication.DownloadListOfTipSegResult;
+import com.sis.mcode.sisapp.communication.ImageServices;
+import com.sis.mcode.sisapp.controller.ProcAfiController;
 import com.sis.mcode.sisapp.controller.TipSegController;
 import com.sis.mcode.sisapp.design.ButtonMenuTipSegAdapter;
+import com.sis.mcode.sisapp.entity.SliderProcAfi;
+import com.sis.mcode.sisapp.entity.SliderTipSeg;
 import com.sis.mcode.sisapp.entity.TipSeg;
 import com.sis.mcode.sisapp.slidingmenu.fragment.MenuFragment;
 import com.sis.mcode.sisapp.util.RoboActionBarActivity;
 
 import java.io.File;
-import java.util.HashMap;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TipSegActivity extends RoboActionBarActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
@@ -42,18 +50,29 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
     @Inject
     protected TipSegController tipSegController;
 
+    @Inject
+    protected ProcAfiController procAfiController;
+
     private SliderLayout mDemoSlider;
 
     List<TipSeg> lstTipSeg;
+    List<SliderTipSeg> lstSliderTipSeg;
+    List<SliderProcAfi> lstSliderProcAfi;
+
+    public static List<String[]> images;
+    ImageServices _service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_seg);
 
+        images = new ArrayList<String[]>();
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setLogo(R.mipmap.ic_launcher);
         myToolbar.setNavigationIcon(R.mipmap.ic_back);
-        myToolbar.setTitle(getIntent().getStringExtra("title"));
+        myToolbar.setTitle(" | " + getIntent().getStringExtra("title"));
         myToolbar.setTitleTextColor(0xffffffff);
         setSupportActionBar(myToolbar);
 
@@ -61,14 +80,39 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         dialog = new ProgressDialog(this);
+        _service = new ImageServices();
 
         if (savedInstanceState == null) {
             displayView();
         }
-
         showMenu();
-
     }
+
+    private void initImages(int idTipSeg) {
+        int opt = getIntent().getIntExtra("opt", 0);
+        images.clear();
+
+        if (opt == 0) {
+            lstSliderTipSeg = tipSegController.getSliderTipSegById(idTipSeg);
+            if (lstSliderTipSeg.size() > 0){
+                for (SliderTipSeg sliderTipSeg: lstSliderTipSeg) {
+                    String[] image = new String[1];
+                    image[0] = sliderTipSeg.getImagen();
+                    images.add(image);
+                }
+            }
+        } else if (opt == 2) {
+            lstSliderProcAfi = procAfiController.getSliderProcAfiById(idTipSeg);
+            if (lstSliderProcAfi.size() > 0){
+                for (SliderProcAfi sliderProcAfi: lstSliderProcAfi) {
+                    String[] image = new String[1];
+                    image[0] = sliderProcAfi.getImagen();
+                    images.add(image);
+                }
+            }
+        }
+    }
+
 
     private void displayView() {
 
@@ -85,10 +129,12 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
     }
 
     public void showMenu(){
-        new ShowMenuTask().execute();
+        new ShowMenuTask().execute(0); // Tipos de Seguro
+        new ShowMenuTask().execute(1); // Descripción de Tipos de Seguro
+        new ShowMenuTask().execute(2); // Procedimientos de Afiliación
     }
 
-    public class ShowMenuTask extends AsyncTask<Void, Void, DownloadListOfTipSegResult> {
+    public class ShowMenuTask extends AsyncTask<Integer, Void, Object> {
 
         @Override
         protected void onPreExecute() {
@@ -99,27 +145,61 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
         }
 
         @Override
-        protected DownloadListOfTipSegResult doInBackground(
-                Void... params) {
-            DownloadListOfTipSegResult result = new DownloadListOfTipSegResult();
-            lstTipSeg = tipSegController.getTipSegList();
-            if (lstTipSeg.size()<=0){
-                result = tipSegController.downloadTipSeg();
-            }else{
-                result.setSuccess(true);
+        protected Object doInBackground(
+                Integer... params) {
+
+            switch (params[0]){
+                case 0:
+                    DownloadListOfTipSegResult result = new DownloadListOfTipSegResult();
+                    lstTipSeg = tipSegController.getTipSegList();
+                    if (lstTipSeg.size()<=0){
+                        result = tipSegController.downloadTipSeg();
+                    }else{
+                        result.setSuccess(true);
+                    }
+                    return result;
+
+                case 1:
+                    DownloadListOfSliderTipSegResult rslt = new DownloadListOfSliderTipSegResult();
+                    lstSliderTipSeg = tipSegController.getSliderTipSegList();
+                    if (lstSliderTipSeg.size()<=0){
+                        rslt = tipSegController.downloadSliderTipSeg();
+                    }else{
+                        rslt.setSuccess(true);
+                    }
+                    return rslt;
+
+                case 2:
+                    DownloadListOfSliderProcAfiResult rlt = new DownloadListOfSliderProcAfiResult();
+                    lstSliderProcAfi = procAfiController.getSliderProcAfiList();
+                    if (lstSliderProcAfi.size()<=0){
+                        rlt = procAfiController.downloadSliderProcAfi();
+                    }else{
+                        rlt.setSuccess(true);
+                    }
+                    return rlt;
             }
-            return result;
+            return null;
+
+
         }
         @Override
-        protected void onPostExecute(DownloadListOfTipSegResult result) {
-            dialog.dismiss();
-            if (result.isSuccess()){
-                createMenu();
-            }else {
-                if(result.getErrorMessage() != null){
-                    showMessage(result.getErrorMessage(),Toast.LENGTH_LONG);
+        protected void onPostExecute(Object result) {
+            if (result instanceof DownloadListOfTipSegResult) {
+                DownloadListOfTipSegResult rslt = (DownloadListOfTipSegResult)result;
+                if (rslt.isSuccess()) {
+                    createMenu();
+                } else {
+                    if (rslt.getErrorMessage() != null) {
+                        showMessage(((DownloadListOfTipSegResult) result).getErrorMessage(),Toast.LENGTH_LONG);
+                    }
+                    finish();
                 }
-                finish();
+            } else if (result instanceof DownloadListOfSliderProcAfiResult){
+                DownloadListOfSliderProcAfiResult rslt = (DownloadListOfSliderProcAfiResult)result;
+                if(rslt.isSuccess()){
+                    dialog.dismiss();
+                }
             }
         }
     }
@@ -153,14 +233,21 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
             for (TipSeg tipSeg : tipSegList) {
                 String name = images + "/" + tipSeg.getImagen();
                 TextSliderView textSliderView = new TextSliderView(this);
+
+                File file = new File(name);
+
+                if(!file.exists()){
+                    textSliderView.image(_service.url + tipSeg.getImagen());
+                    new DownloadImageTask().execute(_service.url + tipSeg.getImagen()+"@"+tipSeg.getImagen());
+                }else {
+                    textSliderView.image(file);
+                }
+
                 textSliderView
                         .description(tipSeg.getNombre())
-                        .image(new File(name))
-                        .setScaleType(BaseSliderView.ScaleType.Fit);
-
-                textSliderView.bundle(new Bundle());
-                textSliderView.getBundle()
-                        .putString("extra", name);
+                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .bundle(new Bundle())
+                        .getBundle().putString("extra", name);
 
                 mDemoSlider.addSlider(textSliderView);
             }
@@ -174,18 +261,62 @@ public class TipSegActivity extends RoboActionBarActivity implements BaseSliderV
         }
     }
 
+    private class DownloadImageTask extends AsyncTask<String, Void, ResponseImage> {
+
+        protected ResponseImage doInBackground(String... urls) {
+            String urldisplay = urls[0].split("@")[0];
+            String img = urls[0].split("@")[1];
+            ResponseImage responseImage = new ResponseImage();
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                responseImage.setResult(BitmapFactory.decodeStream(in));
+                responseImage.setImg(img);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return responseImage;
+        }
+
+        protected void onPostExecute(ResponseImage result) {
+            _service.saveImage(getApplicationContext(), result.getImg(), result.getResult());
+        }
+    }
+
+    private class ResponseImage {
+        private Bitmap result;
+        private String img;
+
+        public String getImg() {
+            return img;
+        }
+
+        public void setImg(String img) {
+            this.img = img;
+        }
+
+        public Bitmap getResult() {
+            return result;
+        }
+
+        public void setResult(Bitmap result) {
+            this.result = result;
+        }
+    }
+
     private void showMessage(String text, int length){
         Toast.makeText(this, text, length).show();
     }
 
     private void openScreen(int i){
+        int idTipSeg = Integer.parseInt(lstTipSeg.get(i).getId());
+        initImages(idTipSeg);
 
         Intent intent = new Intent(this,SliderActivity.class);
-        intent.putExtra("tipseg_id", lstTipSeg.get(i).getId());
-        intent.putExtra("tipseg_name", lstTipSeg.get(i).getNombre());
-        intent.putExtra("tipseg_desc", lstTipSeg.get(i).getDescripcion());
-        intent.putExtra("tipseg_imagen", lstTipSeg.get(i).getImagen());
-        intent.putExtra("opt",getIntent().getIntExtra("opt",0));
+        intent.putExtra("opt", getIntent().getIntExtra("opt", 0));
+        intent.putExtra("tipseg_id",lstTipSeg.get(i).getId());
+        intent.putExtra("pages", images.size());
+
         this.startActivity(intent);
 
     }

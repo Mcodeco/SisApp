@@ -3,6 +3,7 @@ package com.sis.mcode.sisapp.service.impl;
 import android.content.Context;
 
 import com.google.inject.Inject;
+import com.sis.mcode.sisapp.application.SisApp;
 import com.sis.mcode.sisapp.communication.DownloadListOfInfoResult;
 import com.sis.mcode.sisapp.communication.DownloadListOfTipSegResult;
 import com.sis.mcode.sisapp.communication.SoapServices;
@@ -11,7 +12,8 @@ import com.sis.mcode.sisapp.entity.InfoDetail;
 public class AfiliadoServiceImpl {
 
     @Inject
-    private Context context;
+    private Context context = SisApp.getAppContext();
+
 
     public DownloadListOfInfoResult getInfoByName(String firstLastname, String secondLastname, String firstName, String secondName) {
 

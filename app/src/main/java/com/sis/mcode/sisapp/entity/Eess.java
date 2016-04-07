@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "eess")
 public class Eess {
 
     public static final String ID_FIELD_NAME = "id";
@@ -14,29 +13,23 @@ public class Eess {
     public static final String LATITUDE_FIELD_NAME = "x";
     public static final String LONGITUDE_FIELD_NAME = "y";
 
-    @DatabaseField(id=true,columnName = ID_FIELD_NAME, unique = true)
     @SerializedName("Id")
     private String id;
 
     @SerializedName("IdSis")
-    @DatabaseField(columnName=SISCODE_FIELD_NAME)
     private String idSis;
 
     @SerializedName("Descripcion")
-    @DatabaseField(columnName=DESCRIPCION_FIELD_NAME)
     private String descripcion;
 
     @SerializedName("Direccion")
-    @DatabaseField(columnName=DIRECCION_FIELD_NAME)
     private String direccion;
 
 
     @SerializedName("X")
-    @DatabaseField(columnName=LATITUDE_FIELD_NAME)
     private double latitude;
 
     @SerializedName("Y")
-    @DatabaseField(columnName=LONGITUDE_FIELD_NAME)
     private double longitud;
 
 

@@ -38,8 +38,9 @@ public class DetalleAfiliadoActivity extends RoboActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_back);
+        toolbar.setLogo(R.mipmap.ic_launcher);
         toolbar.setTitleTextColor(0xffffffff);
-        toolbar.setTitle("RESULTADO");
+        toolbar.setTitle(" | RESULTADO");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = this.getSupportActionBar();
@@ -59,7 +60,7 @@ public class DetalleAfiliadoActivity extends RoboActionBarActivity {
         @Override
         protected void onPreExecute() {
             dialog.setCancelable(false);
-            dialog.setTitle("Bienvenido");
+            dialog.setTitle("Consultando");
             dialog.setMessage(getResources().getString(R.string.msg_please_wait));
             dialog.show();
         }

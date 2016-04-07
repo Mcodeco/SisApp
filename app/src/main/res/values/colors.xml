@@ -12,7 +12,7 @@
     <color name="list_background">#F1F3F3</color>
     <color name="list_background_pressed">#38C2DE</color>
     <color name="list_divider">#E7E9E9</color>
-    <color name="back_toolbar">#1c588f</color>
+    <color name="back_toolbar">#264A74</color>
     <color name="text_toolbar">#FFFFFF</color>
 
     <!-- Material theme colours -->

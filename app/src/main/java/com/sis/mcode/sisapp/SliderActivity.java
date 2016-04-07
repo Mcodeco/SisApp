@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -25,6 +26,7 @@ import com.sis.mcode.sisapp.fragment.SliderFragment;
 public class SliderActivity extends AppCompatActivity {
 
     private int pages;
+    private int opt;
     ViewPager pager;
     PagerAdapter pagerAdapter;
     LinearLayout circles;
@@ -43,8 +45,10 @@ public class SliderActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         setContentView(R.layout.activity_slider);
+
         this.contextWrapper = new ContextWrapper(this);
         pages = getIntent().getIntExtra("pages", 0);
+        opt = getIntent().getIntExtra("opt", 0);
 
         skip = Button.class.cast(findViewById(R.id.skip));
         skip.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +158,6 @@ public class SliderActivity extends AppCompatActivity {
         return this.contextWrapper;
     }
 
-
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -166,10 +169,9 @@ public class SliderActivity extends AppCompatActivity {
             Fragment fragment = new SliderFragment();
             Bundle args = new Bundle();
             args.putInt("pos", position);
+            args.putInt("opt", opt);
             fragment.setArguments(args);
             return fragment;
-
-
         }
 
         @Override

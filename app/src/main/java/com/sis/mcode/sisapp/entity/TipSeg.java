@@ -15,17 +15,12 @@ public class TipSeg {
 
     public static final String ID_FIELD_NAME = "id";
     public static final String NAME_FIELD_NAME = "name";
-    public static final String DESCRIPTION_FIELD_NAME = "description";
     public static final String ORDER_FIELD_NAME = "order";
     public static final String IMAGE_FIELD_NAME = "image";
 
     @DatabaseField(id=true,columnName = ID_FIELD_NAME, unique = true)
     @SerializedName("Id")
     private String id;
-
-    @SerializedName("Descripcion")
-    @DatabaseField(columnName=DESCRIPTION_FIELD_NAME)
-    private String descripcion;
 
     @SerializedName("Nombre")
     @DatabaseField(columnName=NAME_FIELD_NAME)
@@ -53,14 +48,6 @@ public class TipSeg {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String description) {
-        this.descripcion = description;
     }
 
     public String getOrden() {

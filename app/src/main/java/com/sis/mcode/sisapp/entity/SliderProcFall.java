@@ -5,10 +5,11 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * Created by manuelmoyano on 2/24/16.
+ * Created by manuelmoyano on 4/14/16.
  */
-@DatabaseTable(tableName = "slider_procate")
-public class SliderProcAte {
+@DatabaseTable(tableName = "slider_procfall")
+
+public class SliderProcFall {
 
     public static final String ID_FIELD_NAME = "id";
     public static final String ORDER_FIELD_NAME = "order";
@@ -29,6 +30,7 @@ public class SliderProcAte {
     private String imagen;
 
 
+
     public String getId() {
         return id;
     }
@@ -40,6 +42,7 @@ public class SliderProcAte {
     public String getOrden() {
         return orden;
     }
+
 
     public void setOrden(String orden) {
         this.orden = orden;

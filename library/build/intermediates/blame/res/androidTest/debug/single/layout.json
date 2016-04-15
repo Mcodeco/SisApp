@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/manuelmoyano/Documents/work/sis/projects/SIS App/android/SisApp/library/build/intermediates/res/merged/androidTest/debug/layout/webview.xml",
+        "source": "/Users/manuelmoyano/Documents/work/sis/projects/SIS App/android/SisApp/library/build/intermediates/bundles/debug/res/layout/webview.xml"
+    },
+    {
+        "merged": "/Users/manuelmoyano/Documents/work/sis/projects/SIS App/android/SisApp/library/build/intermediates/res/merged/androidTest/debug/layout/info_window.xml",
+        "source": "/Users/manuelmoyano/Documents/work/sis/projects/SIS App/android/SisApp/library/build/intermediates/bundles/debug/res/layout/info_window.xml"
+    },
+    {
+        "merged": "/Users/manuelmoyano/Documents/work/sis/projects/SIS App/android/SisApp/library/build/intermediates/res/merged/androidTest/debug/layout/text_bubble.xml",
+        "source": "/Users/manuelmoyano/Documents/work/sis/projects/SIS App/android/SisApp/library/build/intermediates/bundles/debug/res/layout/text_bubble.xml"
+    }
+]
